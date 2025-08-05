@@ -175,6 +175,17 @@ const MenuDetail: React.FC = () => {
               </div>
             </div>
 
+            {/* Shelf Life */}
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                <Clock className="w-5 h-5 mr-2" />
+                Shelf Life
+              </h3>
+              <div className="bg-gray-50 rounded-lg p-4">
+                <p className="text-gray-700 whitespace-pre-wrap">{menuItem.shelfLife}</p>
+              </div>
+            </div>
+
             {/* Last Updated */}
             <div className="text-sm text-gray-500 text-center pt-6 border-t">
               Last updated: {menuItem.updatedAt.toLocaleDateString()} at {menuItem.updatedAt.toLocaleTimeString()}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Save, ArrowLeft, Upload, ChefHat, BookOpen, Palette } from 'lucide-react';
+import { Save, ArrowLeft, Upload, ChefHat, BookOpen, Palette, Clock } from 'lucide-react';
 import { MenuFormData } from '../types/MenuItem';
 import { menuService } from '../services/menuService';
 
@@ -18,6 +18,7 @@ const AddEditMenu: React.FC = () => {
     ingredients: '',
     instructions: '',
     presentation: '',
+    shelfLife: '',
     isGlutenFree: false,
     isSugarFree: false,
   });
@@ -46,6 +47,7 @@ const AddEditMenu: React.FC = () => {
           ingredients: item.ingredients || '',
           instructions: item.instructions || '',
           presentation: item.presentation || '',
+          shelfLife: item.shelfLife || '',
           isGlutenFree: item.isGlutenFree || false,
           isSugarFree: item.isSugarFree || false,
         });
@@ -83,6 +85,10 @@ const AddEditMenu: React.FC = () => {
 
     if (!formData.presentation.trim()) {
       newErrors.presentation = 'Presentation instructions are required';
+    }
+
+    if (!formData.shelfLife.trim()) {
+      newErrors.shelfLife = 'Shelf life information is required';
     }
 
     setErrors(newErrors);
@@ -266,6 +272,25 @@ const AddEditMenu: React.FC = () => {
                 placeholder="How should this dish be presented to customers? (plating, garnishes, etc.)"
               />
               {errors.presentation && <p className="mt-1 text-sm text-red-600">{errors.presentation}</p>}
+            </div>
+
+            {/* Shelf Life */}
+            <div>
+              <label htmlFor="shelfLife" className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+                <Clock className="w-4 h-4 mr-2" />
+                Shelf Life *
+              </label>
+              <textarea
+                id="shelfLife"
+                value={formData.shelfLife}
+                onChange={(e) => handleInputChange('shelfLife', e.target.value)}
+                rows={3}
+                className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                  errors.shelfLife ? 'border-red-500' : 'border-gray-300'
+                }`}
+                placeholder="How long can this dish be stored? (e.g., 2 hours at room temperature, 3 days refrigerated, etc.)"
+              />
+              {errors.shelfLife && <p className="mt-1 text-sm text-red-600">{errors.shelfLife}</p>}
             </div>
 
             {/* Image URL */}

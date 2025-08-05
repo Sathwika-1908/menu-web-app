@@ -8,6 +8,7 @@ export interface MenuItem {
   ingredients: string;
   instructions: string;
   presentation: string;
+  shelfLife: string;
   isGlutenFree: boolean;
   isSugarFree: boolean;
   createdAt: Date;
@@ -23,6 +24,7 @@ export interface MenuFormData {
   ingredients: string;
   instructions: string;
   presentation: string;
+  shelfLife: string;
   isGlutenFree: boolean;
   isSugarFree: boolean;
 } 
