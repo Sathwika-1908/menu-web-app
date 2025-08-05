@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Save, ArrowLeft, Upload, ChefHat, BookOpen, Palette, Clock } from 'lucide-react';
+import { Save, ArrowLeft, Upload, ChefHat, BookOpen, Palette, Clock, Package } from 'lucide-react';
 import { MenuFormData } from '../types/MenuItem';
 import { menuService } from '../services/menuService';
 
@@ -19,6 +19,7 @@ const AddEditMenu: React.FC = () => {
     instructions: '',
     presentation: '',
     shelfLife: '',
+    packaging: '',
     isGlutenFree: false,
     isSugarFree: false,
   });
@@ -48,6 +49,7 @@ const AddEditMenu: React.FC = () => {
           instructions: item.instructions || '',
           presentation: item.presentation || '',
           shelfLife: item.shelfLife || '',
+          packaging: item.packaging || '',
           isGlutenFree: item.isGlutenFree || false,
           isSugarFree: item.isSugarFree || false,
         });
@@ -291,6 +293,23 @@ const AddEditMenu: React.FC = () => {
                 placeholder="How long can this dish be stored? (e.g., 2 hours at room temperature, 3 days refrigerated, etc.)"
               />
               {errors.shelfLife && <p className="mt-1 text-sm text-red-600">{errors.shelfLife}</p>}
+            </div>
+
+            {/* Packaging */}
+            <div>
+              <label htmlFor="packaging" className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+                <Package className="w-4 h-4 mr-2" />
+                Packaging
+              </label>
+              <textarea
+                id="packaging"
+                value={formData.packaging}
+                onChange={(e) => handleInputChange('packaging', e.target.value)}
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                placeholder="How should this dish be packaged for delivery or takeaway? (e.g., eco-friendly containers, specific packaging materials, etc.)"
+              />
+              <p className="mt-1 text-sm text-gray-500">Optional: Add packaging instructions for delivery or takeaway</p>
             </div>
 
             {/* Image URL */}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Edit, Clock, DollarSign, Tag, ChefHat, Wheat, Leaf, Palette } from 'lucide-react';
+import { ArrowLeft, Edit, Clock, DollarSign, Tag, ChefHat, Wheat, Leaf, Palette, Package } from 'lucide-react';
 import { MenuItem } from '../types/MenuItem';
 import { menuService } from '../services/menuService';
 
@@ -185,6 +185,19 @@ const MenuDetail: React.FC = () => {
                 <p className="text-gray-700 whitespace-pre-wrap">{menuItem.shelfLife}</p>
               </div>
             </div>
+
+            {/* Packaging - Only show if packaging information exists */}
+            {menuItem.packaging && menuItem.packaging.trim() && (
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                  <Package className="w-5 h-5 mr-2" />
+                  Packaging
+                </h3>
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <p className="text-gray-700 whitespace-pre-wrap">{menuItem.packaging}</p>
+                </div>
+              </div>
+            )}
 
             {/* Last Updated */}
             <div className="text-sm text-gray-500 text-center pt-6 border-t">
