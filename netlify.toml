@@ -1,6 +1,7 @@
 [build]
-  command = "yarn install && yarn build"
+  command = "yarn install && yarn build:netlify"
   publish = "build"
+  base = "."
 
 [[redirects]]
   from = "/*"
@@ -10,4 +11,5 @@
 [build.environment]
   NODE_VERSION = "20"
   YARN_VERSION = "1.22.22"
-  NPM_FLAGS = "--version" 
+  CI = "false"
+  GENERATE_SOURCEMAP = "false" 
