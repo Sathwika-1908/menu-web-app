@@ -1,7 +1,6 @@
 [build]
-  command = "yarn install && yarn build:netlify"
+  command = "yarn install && CI=false yarn build"
   publish = "build"
-  base = "."
 
 [[redirects]]
   from = "/*"
