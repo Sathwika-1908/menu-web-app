@@ -5,6 +5,9 @@ import { orderService } from '../services/orderService';
 import { menuService } from '../services/menuService';
 import { OrderFormData, OrderItem } from '../types/Order';
 import { MenuItem } from '../types/MenuItem';
+import { generateAndDownloadPDF } from '../utils/pdfUtils';
+import { sendOrderReceipt } from '../services/emailService';
+import { Order } from '../types/Order';
 
 const AddEditOrder: React.FC = () => {
   const navigate = useNavigate();
@@ -15,6 +18,7 @@ const AddEditOrder: React.FC = () => {
     orderId: '',
     orderDate: new Date().toISOString().split('T')[0],
     customerName: '',
+    customerEmail: '', // Added email field
     mobileNumber: '',
     city: '',
     pincode: '',
@@ -42,6 +46,7 @@ const AddEditOrder: React.FC = () => {
           orderId: order.orderId,
           orderDate: order.orderDate.toISOString().split('T')[0],
           customerName: order.customerName,
+          customerEmail: order.customerEmail || '', // Load email
           mobileNumber: order.mobileNumber,
           city: order.address.city,
           pincode: order.address.pincode,
@@ -87,11 +92,18 @@ const AddEditOrder: React.FC = () => {
 
     if (!formData.orderId.trim()) newErrors.orderId = 'Order ID is required';
     if (!formData.customerName.trim()) newErrors.customerName = 'Customer name is required';
+    if (!formData.customerEmail.trim()) newErrors.customerEmail = 'Customer email is required';
     if (!formData.mobileNumber.trim()) newErrors.mobileNumber = 'Mobile number is required';
     if (!formData.city.trim()) newErrors.city = 'City is required';
     if (!formData.pincode.trim()) newErrors.pincode = 'Pincode is required';
     if (formData.orderItems.length === 0) newErrors.orderItems = 'At least one item is required';
     if (formData.deliveryCost < 0) newErrors.deliveryCost = 'Delivery cost cannot be negative';
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (formData.customerEmail.trim() && !emailRegex.test(formData.customerEmail)) {
+      newErrors.customerEmail = 'Please enter a valid email address';
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -107,11 +119,62 @@ const AddEditOrder: React.FC = () => {
       
       if (isEditing && id) {
         await orderService.updateOrder(id, formData);
+        alert('Order updated successfully!');
+        navigate('/orders');
       } else {
-        await orderService.createOrder(formData);
+        // Create new order
+        const orderId = await orderService.createOrder(formData);
+        
+        // Create the complete order object for PDF and email
+        const newOrder: Order = {
+          id: orderId,
+          orderId: formData.orderId,
+          orderDate: new Date(formData.orderDate),
+          customerName: formData.customerName,
+          customerEmail: formData.customerEmail,
+          mobileNumber: formData.mobileNumber,
+          address: {
+            city: formData.city,
+            pincode: formData.pincode,
+          },
+          orderItems: formData.orderItems,
+          deliveryCost: formData.deliveryCost,
+          totalCost: calculateTotalCost(),
+          paymentStatus: formData.paymentStatus,
+          modeOfPayment: formData.modeOfPayment,
+          referenceNumber: formData.referenceNumber,
+          deliveryDate: formData.deliveryDate ? new Date(formData.deliveryDate) : undefined,
+          feedback: formData.feedback,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+        
+        alert('Order created successfully!');
+        
+        // Generate PDF and send email after successful order creation
+        try {
+          // Generate and download PDF
+          await generateAndDownloadPDF(newOrder);
+          
+          // Send email receipt
+          const emailResult = await sendOrderReceipt(
+            newOrder,
+            formData.customerEmail,
+            formData.customerName
+          );
+          
+          if (emailResult.success) {
+            alert('Order receipt sent to customer email!');
+          } else {
+            alert(`Order created but email failed: ${emailResult.message}`);
+          }
+        } catch (error) {
+          console.error('PDF/Email error:', error);
+          alert('Order created successfully! PDF generation or email failed.');
+        }
+        
+        navigate('/orders');
       }
-      
-      navigate('/orders');
     } catch (error) {
       console.error('Error saving order:', error);
       alert('Error saving order. Please try again.');
@@ -267,6 +330,22 @@ const AddEditOrder: React.FC = () => {
                   placeholder="Enter customer name"
                 />
                 {errors.customerName && <p className="mt-1 text-sm text-red-600">{errors.customerName}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Customer Email *
+                </label>
+                <input
+                  type="email"
+                  value={formData.customerEmail}
+                  onChange={(e) => handleInputChange('customerEmail', e.target.value)}
+                  className={`w-full px-3 py-2 border rounded-md focus:ring-primary-500 focus:border-primary-500 ${
+                    errors.customerEmail ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  placeholder="Enter customer email"
+                />
+                {errors.customerEmail && <p className="mt-1 text-sm text-red-600">{errors.customerEmail}</p>}
               </div>
 
               <div>

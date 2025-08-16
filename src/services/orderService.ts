@@ -1,4 +1,4 @@
-import { ref, push, get, update, remove } from 'firebase/database';
+import { ref, push, get, update, remove, set } from 'firebase/database';
 import { database } from '../firebase';
 import { Order, OrderFormData } from '../types/Order';
 
@@ -32,6 +32,7 @@ export const orderService = {
         orderId: orderData.orderId,
         orderDate: new Date(orderData.orderDate),
         customerName: orderData.customerName,
+        customerEmail: orderData.customerEmail, // Added email field
         mobileNumber: orderData.mobileNumber,
         address: {
           city: orderData.city,
@@ -39,7 +40,7 @@ export const orderService = {
         },
         orderItems: orderData.orderItems,
         deliveryCost: orderData.deliveryCost,
-        totalCost: orderData.deliveryCost + orderData.orderItems.reduce((sum, item) => sum + item.totalPrice, 0),
+        totalCost: orderData.orderItems.reduce((sum, item) => sum + item.totalPrice, 0) + orderData.deliveryCost,
         paymentStatus: orderData.paymentStatus,
         modeOfPayment: orderData.modeOfPayment,
         referenceNumber: orderData.referenceNumber,
@@ -51,7 +52,7 @@ export const orderService = {
 
       console.log('Order object prepared:', order);
       
-      await update(newOrderRef, order);
+      await set(newOrderRef, order);
       console.log('Order saved successfully with ID:', newOrderRef.key);
       
       return newOrderRef.key!;
@@ -121,6 +122,7 @@ export const orderService = {
     if (orderData.orderId !== undefined) updateData.orderId = orderData.orderId;
     if (orderData.orderDate !== undefined) updateData.orderDate = new Date(orderData.orderDate);
     if (orderData.customerName !== undefined) updateData.customerName = orderData.customerName;
+    if (orderData.customerEmail !== undefined) updateData.customerEmail = orderData.customerEmail; // Added email field
     if (orderData.mobileNumber !== undefined) updateData.mobileNumber = orderData.mobileNumber;
     if (orderData.city !== undefined) updateData.address = { city: orderData.city, pincode: orderData.pincode || '' };
     if (orderData.pincode !== undefined) updateData.address = { city: orderData.city || '', pincode: orderData.pincode };

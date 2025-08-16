@@ -7,12 +7,16 @@ import MenuDetail from './pages/MenuDetail';
 import ViewOrders from './pages/ViewOrders';
 import AddEditOrder from './pages/AddEditOrder';
 import OrderDetail from './pages/OrderDetail';
+import { initializeEmailJS } from './services/emailService';
 import './index.css';
+
+// Initialize EmailJS
+initializeEmailJS();
 
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div className="min-h-screen bg-gray-50">
         <Navigation />
         <Routes>
           <Route path="/" element={<ViewMenu />} />

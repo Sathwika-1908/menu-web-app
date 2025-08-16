@@ -11,6 +11,7 @@ export interface Order {
   orderId: string;
   orderDate: Date;
   customerName: string;
+  customerEmail: string; // Added email field
   mobileNumber: string;
   address: {
     city: string;
@@ -32,6 +33,7 @@ export interface OrderFormData {
   orderId: string;
   orderDate: string;
   customerName: string;
+  customerEmail: string; // Added email field
   mobileNumber: string;
   city: string;
   pincode: string;

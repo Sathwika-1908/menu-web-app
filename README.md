@@ -24,6 +24,8 @@ A modern, real-time menu management system with integrated sales tracking, built
 - **📊 Sales Analytics** - View total orders, revenue, and payment statistics
 - **🔍 Advanced Search** - Find orders by customer name, order ID, or phone number
 - **📱 Real-time Updates** - Instant synchronization across all devices
+- **📄 PDF Bills** - Generate professional PDF invoices for orders
+- **📧 Email Receipts** - Automatically send order receipts to customers via email
 
 ## 🛠 **Tech Stack**
 
@@ -68,7 +70,8 @@ menu-web-app-public/
 │   └── index.html
 ├── src/
 │   ├── components/
-│   │   └── Navigation.tsx
+│   │   ├── Navigation.tsx
+│   │   └── BillPDF.tsx 🆕
 │   ├── pages/
 │   │   ├── ViewMenu.tsx
 │   │   ├── AddEditMenu.tsx
@@ -78,10 +81,15 @@ menu-web-app-public/
 │   │   └── OrderDetail.tsx 🆕
 │   ├── services/
 │   │   ├── menuService.ts
-│   │   └── orderService.ts 🆕
+│   │   ├── orderService.ts 🆕
+│   │   └── emailService.ts 🆕
 │   ├── types/
 │   │   ├── MenuItem.ts
 │   │   └── Order.ts 🆕
+│   ├── utils/
+│   │   └── pdfUtils.ts 🆕
+│   ├── config/
+│   │   └── emailjs.ts 🆕
 │   ├── App.tsx
 │   ├── firebase.ts
 │   └── index.tsx
@@ -167,6 +175,24 @@ menu-web-app-public/
   }
 }
 ```
+
+### **EmailJS Setup (for Email Receipts)** 🆕
+1. Go to [EmailJS](https://www.emailjs.com/) and create an account
+2. Add your email service (Gmail, Outlook, etc.)
+3. Create an email template with these variables:
+   - `{{to_email}}`, `{{to_name}}`, `{{order_id}}`, `{{order_date}}`
+   - `{{customer_name}}`, `{{total_amount}}`, `{{payment_status}}`
+   - `{{payment_mode}}`, `{{delivery_address}}`, `{{order_items}}`
+4. Copy your Service ID, Template ID, and User ID
+5. Update `src/config/emailjs.ts` with your credentials
+6. Test the email functionality
+
+### **PDF Generation** 🆕
+- PDF bills are automatically generated when orders are created
+- Professional invoice layout with company branding
+- Includes all order details, customer information, and cost breakdown
+- Download PDF button available on order detail pages
+- PDFs can be opened in new tabs or downloaded directly
 
 ## 🚀 **Deployment**
 
