@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, Plus } from 'lucide-react';
+import { Menu, Plus, Package } from 'lucide-react';
 
 const Navigation: React.FC = () => {
   const location = useLocation();
@@ -36,6 +36,18 @@ const Navigation: React.FC = () => {
             >
               <Plus className="w-4 h-4 mr-2" />
               Add Menu Item
+            </Link>
+
+            <Link
+              to="/orders"
+              className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                location.pathname.startsWith('/orders')
+                  ? 'bg-primary-100 text-primary-700'
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+              }`}
+            >
+              <Package className="w-4 h-4 mr-2" />
+              Sales Tracker
             </Link>
           </div>
         </div>

@@ -1,9 +1,10 @@
 # 🍽️ Menu Web Application
 
-A modern, real-time menu management system built with React, TypeScript, and Firebase Realtime Database.
+A modern, real-time menu management system with integrated sales tracking, built with React, TypeScript, and Firebase Realtime Database.
 
 ## ✨ **Features**
 
+### **Menu Management**
 - **📱 Responsive Design** - Works perfectly on desktop, tablet, and mobile
 - **⚡ Real-time Updates** - Changes appear instantly across all devices
 - **🔍 Search & Filter** - Find menu items quickly by name, ingredients, or category
@@ -13,6 +14,16 @@ A modern, real-time menu management system built with React, TypeScript, and Fir
 - **🖼️ Image Support** - Add beautiful images to menu items
 - **📊 Category Management** - Organize items by categories
 - **✅ Availability Toggle** - Mark items as available/unavailable
+
+### **Sales Tracker** 🆕
+- **📋 Order Management** - Create, edit, and track customer orders
+- **👥 Customer Details** - Store customer information, contact details, and addresses
+- **🛒 Order Items** - Add multiple menu items with quantities and automatic pricing
+- **💳 Payment Tracking** - Monitor payment status, modes, and reference numbers
+- **🚚 Delivery Management** - Track delivery dates and costs
+- **📊 Sales Analytics** - View total orders, revenue, and payment statistics
+- **🔍 Advanced Search** - Find orders by customer name, order ID, or phone number
+- **📱 Real-time Updates** - Instant synchronization across all devices
 
 ## 🛠 **Tech Stack**
 
@@ -57,16 +68,20 @@ menu-web-app-public/
 │   └── index.html
 ├── src/
 │   ├── components/
-│   │   ├── Navigation.tsx
-│   │   └── MenuCard.tsx
+│   │   └── Navigation.tsx
 │   ├── pages/
 │   │   ├── ViewMenu.tsx
 │   │   ├── AddEditMenu.tsx
-│   │   └── MenuDetail.tsx
+│   │   ├── MenuDetail.tsx
+│   │   ├── ViewOrders.tsx 🆕
+│   │   ├── AddEditOrder.tsx 🆕
+│   │   └── OrderDetail.tsx 🆕
 │   ├── services/
-│   │   └── menuService.ts
+│   │   ├── menuService.ts
+│   │   └── orderService.ts 🆕
 │   ├── types/
-│   │   └── MenuItem.ts
+│   │   ├── MenuItem.ts
+│   │   └── Order.ts 🆕
 │   ├── App.tsx
 │   ├── firebase.ts
 │   └── index.tsx
@@ -80,7 +95,7 @@ menu-web-app-public/
 
 ## 🎯 **Usage**
 
-### **Viewing Menu Items**
+### **Menu Management**
 - Browse all menu items on the home page
 - Use search to find specific items
 - Filter by category
@@ -108,6 +123,28 @@ menu-web-app-public/
 1. Click "Delete" on any menu card
 2. Confirm the deletion
 
+### **Sales Tracking** 🆕
+- **View Orders:** Navigate to "Sales Tracker" to see all orders
+- **Add New Order:** Click "Add New Order" to create customer orders
+- **Order Details:** Click "View" on any order to see complete information
+- **Edit Orders:** Modify existing orders using the "Edit" button
+- **Search & Filter:** Use search bar and filters to find specific orders
+- **Payment Status:** Track payment status (Pending, Paid, Failed, Refunded)
+- **Delivery Management:** Set delivery dates and track delivery costs
+
+### **Order Information Fields**
+- **Order ID** - Unique identifier for the order
+- **Order Date** - When the order was placed
+- **Customer Details** - Name, mobile number, city, pincode
+- **Order Items** - Menu items with quantities and prices
+- **Delivery Cost** - Shipping/delivery charges
+- **Total Cost** - Automatically calculated (items + delivery)
+- **Payment Status** - Current payment status
+- **Payment Mode** - Cash, Card, UPI, or Online
+- **Reference Number** - Transaction reference (optional)
+- **Delivery Date** - Expected delivery date (optional)
+- **Feedback** - Customer feedback or notes (optional)
+
 ## 🔧 **Configuration**
 
 ### **Firebase Setup**
@@ -120,6 +157,10 @@ menu-web-app-public/
 {
   "rules": {
     "menuItems": {
+      ".read": true,
+      ".write": true
+    },
+    "orders": {
       ".read": true,
       ".write": true
     }
@@ -169,6 +210,13 @@ See `DEPLOYMENT.md` for detailed deployment instructions.
 - Large image display
 - Ingredients and instructions
 - Presentation guide
+
+### **Sales Tracker** 🆕
+- **Orders Dashboard:** Overview with statistics and search
+- **Order Form:** Comprehensive order creation with menu item selection
+- **Order Details:** Complete order information with customer details
+- **Payment Tracking:** Visual payment status indicators
+- **Cost Summary:** Automatic calculation of totals
 
 ## 🔒 **Security**
 
